@@ -23,6 +23,7 @@ mixin _$Word {
   String get word => throw _privateConstructorUsedError;
   List<String> get definitions => throw _privateConstructorUsedError;
   String get partOfSpeech => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
   String? get ergative => throw _privateConstructorUsedError;
   List<String>? get examples => throw _privateConstructorUsedError;
   String? get pronunciation => throw _privateConstructorUsedError;
@@ -41,6 +42,7 @@ abstract class $WordCopyWith<$Res> {
       {String word,
       List<String> definitions,
       String partOfSpeech,
+      String? id,
       String? ergative,
       List<String>? examples,
       String? pronunciation});
@@ -62,6 +64,7 @@ class _$WordCopyWithImpl<$Res, $Val extends Word>
     Object? word = null,
     Object? definitions = null,
     Object? partOfSpeech = null,
+    Object? id = freezed,
     Object? ergative = freezed,
     Object? examples = freezed,
     Object? pronunciation = freezed,
@@ -79,6 +82,10 @@ class _$WordCopyWithImpl<$Res, $Val extends Word>
           ? _value.partOfSpeech
           : partOfSpeech // ignore: cast_nullable_to_non_nullable
               as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       ergative: freezed == ergative
           ? _value.ergative
           : ergative // ignore: cast_nullable_to_non_nullable
@@ -105,6 +112,7 @@ abstract class _$$_WordCopyWith<$Res> implements $WordCopyWith<$Res> {
       {String word,
       List<String> definitions,
       String partOfSpeech,
+      String? id,
       String? ergative,
       List<String>? examples,
       String? pronunciation});
@@ -122,6 +130,7 @@ class __$$_WordCopyWithImpl<$Res> extends _$WordCopyWithImpl<$Res, _$_Word>
     Object? word = null,
     Object? definitions = null,
     Object? partOfSpeech = null,
+    Object? id = freezed,
     Object? ergative = freezed,
     Object? examples = freezed,
     Object? pronunciation = freezed,
@@ -139,6 +148,10 @@ class __$$_WordCopyWithImpl<$Res> extends _$WordCopyWithImpl<$Res, _$_Word>
           ? _value.partOfSpeech
           : partOfSpeech // ignore: cast_nullable_to_non_nullable
               as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       ergative: freezed == ergative
           ? _value.ergative
           : ergative // ignore: cast_nullable_to_non_nullable
@@ -162,6 +175,7 @@ class _$_Word with DiagnosticableTreeMixin implements _Word {
       {required this.word,
       required final List<String> definitions,
       required this.partOfSpeech,
+      this.id,
       this.ergative,
       final List<String>? examples,
       this.pronunciation})
@@ -183,6 +197,8 @@ class _$_Word with DiagnosticableTreeMixin implements _Word {
   @override
   final String partOfSpeech;
   @override
+  final String? id;
+  @override
   final String? ergative;
   final List<String>? _examples;
   @override
@@ -199,7 +215,7 @@ class _$_Word with DiagnosticableTreeMixin implements _Word {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Word(word: $word, definitions: $definitions, partOfSpeech: $partOfSpeech, ergative: $ergative, examples: $examples, pronunciation: $pronunciation)';
+    return 'Word(word: $word, definitions: $definitions, partOfSpeech: $partOfSpeech, id: $id, ergative: $ergative, examples: $examples, pronunciation: $pronunciation)';
   }
 
   @override
@@ -210,6 +226,7 @@ class _$_Word with DiagnosticableTreeMixin implements _Word {
       ..add(DiagnosticsProperty('word', word))
       ..add(DiagnosticsProperty('definitions', definitions))
       ..add(DiagnosticsProperty('partOfSpeech', partOfSpeech))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('ergative', ergative))
       ..add(DiagnosticsProperty('examples', examples))
       ..add(DiagnosticsProperty('pronunciation', pronunciation));
@@ -225,6 +242,7 @@ class _$_Word with DiagnosticableTreeMixin implements _Word {
                 .equals(other._definitions, _definitions) &&
             (identical(other.partOfSpeech, partOfSpeech) ||
                 other.partOfSpeech == partOfSpeech) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.ergative, ergative) ||
                 other.ergative == ergative) &&
             const DeepCollectionEquality().equals(other._examples, _examples) &&
@@ -239,6 +257,7 @@ class _$_Word with DiagnosticableTreeMixin implements _Word {
       word,
       const DeepCollectionEquality().hash(_definitions),
       partOfSpeech,
+      id,
       ergative,
       const DeepCollectionEquality().hash(_examples),
       pronunciation);
@@ -262,6 +281,7 @@ abstract class _Word implements Word {
       {required final String word,
       required final List<String> definitions,
       required final String partOfSpeech,
+      final String? id,
       final String? ergative,
       final List<String>? examples,
       final String? pronunciation}) = _$_Word;
@@ -274,6 +294,8 @@ abstract class _Word implements Word {
   List<String> get definitions;
   @override
   String get partOfSpeech;
+  @override
+  String? get id;
   @override
   String? get ergative;
   @override

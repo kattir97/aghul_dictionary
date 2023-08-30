@@ -7,7 +7,7 @@ final wordDetailsFutureProvider =
     FutureProvider.family.autoDispose<Word, String>((ref, wordId) async {
   var detailsProvider = ref.read(wordDetailsProvider);
   final strm = ref.watch(allEntriesStream);
-  if (strm.isRefreshing) {
+  if (strm.isReloading) {
     detailsProvider = ref.read(wordDetailsProvider);
   }
   final word = await detailsProvider.getWordData(wordId);

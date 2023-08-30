@@ -1,5 +1,7 @@
 import 'package:aghul_dictionary/features/word/presentation/screens/update_word_screen.dart';
+import 'package:aghul_dictionary/features/word_details/data/local/isar_word_details_repository.dart';
 import 'package:aghul_dictionary/features/word_details/data/remote/word_details_repository.dart';
+import 'package:aghul_dictionary/features/word_details/presentation/riverpod/isar_word_future_provider.dart';
 import 'package:aghul_dictionary/features/word_details/presentation/riverpod/word_details_future_provider.dart';
 import 'package:aghul_dictionary/features/word_details/presentation/widgets/delete_confirmation_dialog.dart';
 import 'package:aghul_dictionary/features/word_details/presentation/widgets/list_data_widget.dart';
@@ -17,9 +19,12 @@ class WordDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final details = ref.watch(wordDetailsFutureProvider(wordId));
+    // final details = ref.watch(wordDetailsFutureProvider(wordId));
+    final details = ref.watch(isarWordFutureProvider(wordId));
+
     return details.when(
       data: (data) {
+        print("WORD ++++++++++++ $data");
         return Scaffold(
           backgroundColor: const Color(0xFFEBEEF4),
           appBar: AppBar(

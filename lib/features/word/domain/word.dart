@@ -11,6 +11,7 @@ class Word with _$Word {
     required String word,
     required List<String> definitions,
     required String partOfSpeech,
+    String? id,
     String? ergative,
     List<String>? examples,
     String? pronunciation,

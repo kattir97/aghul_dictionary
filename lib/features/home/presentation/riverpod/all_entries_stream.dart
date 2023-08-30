@@ -1,26 +1,22 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:aghul_dictionary/features/home/data/remote/home_repository.dart';
-import 'package:aghul_dictionary/features/home/domain/entry.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:aghul_dictionary/features/word/domain/word.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final allEntriesStream = StreamProvider.autoDispose<Iterable<Entry>>(
+final allEntriesStream = StreamProvider.autoDispose<Iterable<Word>>(
   (ref) {
     final homeRep = ref.watch(homeRepositoryProvider);
-    final controller = StreamController<Iterable<Entry>>();
+    final controller = StreamController<Iterable<Word>>();
 
     final sub = homeRep.getEntries().listen(
       (snapshots) {
-        final entries = snapshots.docs.map((e) {
-          final id = e.id;
-          print(id);
-          final entry = Entry.fromJson(e.data()).copyWith(wordId: id);
-          print('++++++++ENTRY++++++++: $entry');
+        final words = snapshots.docs.map((w) {
+          final id = w.id;
+          final entry = Word.fromJson(w.data()).copyWith(id: id);
           return entry;
         });
-        controller.sink.add(entries);
+        controller.sink.add(words);
       },
     );
 
