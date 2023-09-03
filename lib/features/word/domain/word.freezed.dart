@@ -20,7 +20,9 @@ Word _$WordFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Word {
+  @Index()
   String get word => throw _privateConstructorUsedError;
+  @Index()
   List<String> get definitions => throw _privateConstructorUsedError;
   String get partOfSpeech => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
@@ -39,8 +41,8 @@ abstract class $WordCopyWith<$Res> {
       _$WordCopyWithImpl<$Res, Word>;
   @useResult
   $Res call(
-      {String word,
-      List<String> definitions,
+      {@Index() String word,
+      @Index() List<String> definitions,
       String partOfSpeech,
       String? id,
       String? ergative,
@@ -109,8 +111,8 @@ abstract class _$$_WordCopyWith<$Res> implements $WordCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String word,
-      List<String> definitions,
+      {@Index() String word,
+      @Index() List<String> definitions,
       String partOfSpeech,
       String? id,
       String? ergative,
@@ -170,24 +172,27 @@ class __$$_WordCopyWithImpl<$Res> extends _$WordCopyWithImpl<$Res, _$_Word>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Word with DiagnosticableTreeMixin implements _Word {
+class _$_Word extends _Word with DiagnosticableTreeMixin {
   const _$_Word(
-      {required this.word,
-      required final List<String> definitions,
+      {@Index() required this.word,
+      @Index() required final List<String> definitions,
       required this.partOfSpeech,
       this.id,
       this.ergative,
       final List<String>? examples,
       this.pronunciation})
       : _definitions = definitions,
-        _examples = examples;
+        _examples = examples,
+        super._();
 
   factory _$_Word.fromJson(Map<String, dynamic> json) => _$$_WordFromJson(json);
 
   @override
+  @Index()
   final String word;
   final List<String> _definitions;
   @override
+  @Index()
   List<String> get definitions {
     if (_definitions is EqualUnmodifiableListView) return _definitions;
     // ignore: implicit_dynamic_type
@@ -276,21 +281,24 @@ class _$_Word with DiagnosticableTreeMixin implements _Word {
   }
 }
 
-abstract class _Word implements Word {
+abstract class _Word extends Word {
   const factory _Word(
-      {required final String word,
-      required final List<String> definitions,
+      {@Index() required final String word,
+      @Index() required final List<String> definitions,
       required final String partOfSpeech,
       final String? id,
       final String? ergative,
       final List<String>? examples,
       final String? pronunciation}) = _$_Word;
+  const _Word._() : super._();
 
   factory _Word.fromJson(Map<String, dynamic> json) = _$_Word.fromJson;
 
   @override
+  @Index()
   String get word;
   @override
+  @Index()
   List<String> get definitions;
   @override
   String get partOfSpeech;

@@ -1,11 +1,10 @@
 import 'package:aghul_dictionary/features/word/domain/word.dart';
 import 'package:aghul_dictionary/isar/isar_service.dart';
-import 'package:aghul_dictionary/isar/models/isar_word.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 abstract class IsarHomeRepository {
   Future<void> saveWords(List<Word> words);
-  Stream<List<IsarWord>> getWords();
+  Stream<List<Word>> getWords();
 }
 
 class IsarHomeRepositoryImpl implements IsarHomeRepository {
@@ -17,7 +16,7 @@ class IsarHomeRepositoryImpl implements IsarHomeRepository {
   }
 
   @override
-  Stream<List<IsarWord>> getWords() {
+  Stream<List<Word>> getWords() {
     return isarService.getWords();
   }
 }

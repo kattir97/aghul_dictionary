@@ -8,19 +8,9 @@ final isarWordFutureProvider =
   var det = ref.read(isarWordDetailsProvider);
   final strm = ref.watch(isarWordsStream);
   final wordDetails = await det.getWord(wordId);
-  print('ISARWORD =========$wordDetails=============');
   if (strm.isReloading) {
     det = ref.read(isarWordDetailsProvider);
   }
 
-  final word = Word(
-    word: wordDetails?.word ?? '',
-    definitions: wordDetails?.definitions ?? [],
-    partOfSpeech: wordDetails?.partOfSpeech ?? '',
-    ergative: wordDetails?.ergative ?? '',
-    examples: wordDetails?.examples ?? [],
-    pronunciation: wordDetails?.pronunciation,
-  );
-
-  return word;
+  return wordDetails!;
 });

@@ -1,6 +1,7 @@
 import 'package:aghul_dictionary/features/word/domain/word.dart';
-import 'package:aghul_dictionary/isar/models/isar_entry.dart';
 import 'package:aghul_dictionary/isar/models/isar_word.dart';
+
+import 'package:aghul_dictionary/utils/fast_hash.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -13,46 +14,47 @@ class IsarService {
 
   Future<void> saveWords(List<Word> wordList) async {
     final isar = await db;
-    final wordData = wordList.map((w) {
-      final word = IsarWord()
-        ..wordId = w.id
-        ..word = w.word
-        ..definitions = w.definitions
-        ..ergative = w.ergative
-        ..partOfSpeech = w.partOfSpeech
-        ..examples = w.examples
-        ..pronunciation = w.pronunciation;
-
-      return word;
-    }).toList();
-
     await isar.writeTxn(() async {
-      await isar.isarWords.putAll(wordData);
+      await isar.words.putAll(wordList);
     });
   }
 
-  Stream<List<IsarWord>> getWords() async* {
+  Stream<List<Word>> getWords() async* {
     final isar = await db;
-    yield* isar.isarWords.where().watch(fireImmediately: true);
+    yield* isar.words.where().watch(fireImmediately: true);
   }
 
-  Future<IsarWord?> getWordDetails(String wordId) async {
+  Future<Word?> getWordDetails(String wordId) async {
     final isar = await db;
-    final word = await isar.isarWords.where().wordIdEqualTo(wordId).findFirst();
+    final isarId = fastHash(wordId);
+    final word = await isar.words.get(isarId);
     return word;
   }
 
   Future<void> deleteWord(String wordId) async {
     final isar = await db;
+    final isarId = fastHash(wordId);
     await isar.writeTxn(() async {
-      await isar.isarWords.where().wordIdEqualTo(wordId).deleteFirst();
+      await isar.words.delete(isarId);
     });
+  }
+
+  Future<List<Word>> findWords(String searchTerm) async {
+    final isar = await db;
+    final result = isar.words
+        .filter()
+        .wordContains(searchTerm, caseSensitive: false)
+        .or()
+        .definitionsElementContains(searchTerm, caseSensitive: false)
+        .findAll();
+
+    return await result;
   }
 
   Future<Isar> openDb() async {
     if (Isar.instanceNames.isEmpty) {
       final dir = await getApplicationSupportDirectory();
-      return await Isar.open([IsarEntrySchema, IsarWordSchema],
+      return await Isar.open([WordSchema],
           directory: dir.path, inspector: true);
     }
 

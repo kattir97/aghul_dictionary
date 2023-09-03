@@ -1,4 +1,5 @@
 import 'package:aghul_dictionary/features/home/presentation/screens/home_screen.dart';
+import 'package:aghul_dictionary/features/search/presentation/widgets/search_bar_widget.dart';
 import 'package:aghul_dictionary/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter App'),
+        actions: const [
+          SearchBarWidget(),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
