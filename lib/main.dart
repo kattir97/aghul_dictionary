@@ -1,6 +1,8 @@
 import 'package:aghul_dictionary/features/home/presentation/screens/home_screen.dart';
+import 'package:aghul_dictionary/features/home/presentation/screens/setup_screen.dart';
 import 'package:aghul_dictionary/features/search/presentation/widgets/search_bar_widget.dart';
 import 'package:aghul_dictionary/firebase_options.dart';
+import 'package:aghul_dictionary/utils/shared_prefs_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -53,7 +55,7 @@ class HomePage extends StatelessWidget {
           );
         },
       ),
-      body: const HomeScreen(),
+      body: const SetupScreen(),
     );
   }
 }

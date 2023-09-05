@@ -9,16 +9,17 @@ final allEntriesStream = StreamProvider.autoDispose<Iterable<Word>>(
     final homeRep = ref.watch(homeRepositoryProvider);
     final controller = StreamController<Iterable<Word>>();
 
-    final sub = homeRep.getEntries().listen(
-      (snapshots) {
-        final words = snapshots.docs.map((w) {
-          final id = w.id;
-          final entry = Word.fromJson(w.data()).copyWith(id: id);
-          return entry;
-        });
-        controller.sink.add(words);
-      },
-    );
+    final sub = homeRep.getEntries().listen((snapshots) {
+      final words = snapshots.docs.map((change) {
+        final w = change;
+        final id = w.id;
+        final entry = Word.fromJson(w.data()).copyWith(id: id);
+
+        return entry;
+      });
+
+      controller.sink.add(words);
+    });
 
     ref.onDispose(() {
       sub.cancel();

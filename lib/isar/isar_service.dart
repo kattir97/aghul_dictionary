@@ -1,5 +1,4 @@
 import 'package:aghul_dictionary/features/word/domain/word.dart';
-import 'package:aghul_dictionary/isar/models/isar_word.dart';
 
 import 'package:aghul_dictionary/utils/fast_hash.dart';
 import 'package:isar/isar.dart';

@@ -14,15 +14,17 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isarHomeRep = ref.read(isarHomeProvider);
     final isarWords = ref.watch(isarWordsStream);
-    final asyncValue = ref.watch(allEntriesStream);
+    final allEntriesStreamProvider = ref.watch(allEntriesStream);
     final searchResults = ref.watch(searchResultsProvider);
     final searchTerm = ref.watch(searchQueryProvider);
 
     return RefreshIndicator(
       onRefresh: () async {
         ref.refresh(allEntriesStream);
-        asyncValue.when(
+
+        allEntriesStreamProvider.when(
           data: (data) {
+            print('DATA:=======================\n $data');
             final listData = data.toList();
             isarHomeRep.saveWords(listData);
           },
