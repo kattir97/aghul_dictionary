@@ -18,6 +18,12 @@ class IsarService {
     });
   }
 
+  Future<List<Word>> getAllDocs() async {
+    final isar = await db;
+    final words = isar.words.where().findAll();
+    return words;
+  }
+
   Stream<List<Word>> getWords() async* {
     final isar = await db;
     yield* isar.words.where().watch(fireImmediately: true);

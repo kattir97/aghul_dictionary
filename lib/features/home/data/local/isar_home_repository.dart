@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 abstract class IsarHomeRepository {
   Future<void> saveWords(List<Word> words);
   Stream<List<Word>> getWords();
+  Future<List<Word>> getAllDocs();
   Future<bool> checkFirst();
 }
 
@@ -37,6 +38,11 @@ class IsarHomeRepositoryImpl implements IsarHomeRepository {
     } else {
       return false;
     }
+  }
+
+  @override
+  Future<List<Word>> getAllDocs() async {
+    return await isarService.getAllDocs();
   }
 }
 

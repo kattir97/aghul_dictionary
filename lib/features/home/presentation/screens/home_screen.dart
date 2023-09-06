@@ -20,7 +20,7 @@ class HomeScreen extends ConsumerWidget {
 
     return RefreshIndicator(
       onRefresh: () async {
-        ref.refresh(allEntriesStream);
+        // ref.refresh(allEntriesStream);
 
         allEntriesStreamProvider.when(
           data: (data) {

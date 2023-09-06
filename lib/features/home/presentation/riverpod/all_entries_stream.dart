@@ -1,24 +1,22 @@
 import 'dart:async';
 
+import 'package:aghul_dictionary/features/home/data/local/isar_home_repository.dart';
 import 'package:aghul_dictionary/features/home/data/remote/home_repository.dart';
 import 'package:aghul_dictionary/features/word/domain/word.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final allEntriesStream = StreamProvider.autoDispose<Iterable<Word>>(
-  (ref) {
-    final homeRep = ref.watch(homeRepositoryProvider);
+  (ref) async* {
+    final homeRep = ref.read(homeRepositoryProvider);
+    final isarHomeRep = ref.read(isarHomeProvider);
     final controller = StreamController<Iterable<Word>>();
 
-    final sub = homeRep.getEntries().listen((snapshots) {
-      final words = snapshots.docs.map((change) {
-        final w = change;
-        final id = w.id;
-        final entry = Word.fromJson(w.data()).copyWith(id: id);
+    final allDocs = await isarHomeRep.getAllDocs();
 
-        return entry;
-      });
+    controller.sink.add(allDocs);
 
-      controller.sink.add(words);
+    final sub = homeRep.getEntries().listen((modifiedOrAddedWords) {
+      controller.sink.add(modifiedOrAddedWords);
     });
 
     ref.onDispose(() {
@@ -26,6 +24,6 @@ final allEntriesStream = StreamProvider.autoDispose<Iterable<Word>>(
       controller.close();
     });
 
-    return controller.stream;
+    yield* controller.stream;
   },
 );
