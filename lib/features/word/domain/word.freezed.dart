@@ -20,15 +20,16 @@ Word _$WordFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Word {
-  @Index()
   String get word => throw _privateConstructorUsedError;
-  @Index()
   List<String> get definitions => throw _privateConstructorUsedError;
   String get partOfSpeech => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
   String? get ergative => throw _privateConstructorUsedError;
   List<String>? get examples => throw _privateConstructorUsedError;
   String? get pronunciation => throw _privateConstructorUsedError;
+  @ServerTimestampConverter()
+  @JsonKey(name: 'createdAt')
+  DateTime? get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,13 +42,16 @@ abstract class $WordCopyWith<$Res> {
       _$WordCopyWithImpl<$Res, Word>;
   @useResult
   $Res call(
-      {@Index() String word,
-      @Index() List<String> definitions,
+      {String word,
+      List<String> definitions,
       String partOfSpeech,
       String? id,
       String? ergative,
       List<String>? examples,
-      String? pronunciation});
+      String? pronunciation,
+      @ServerTimestampConverter()
+      @JsonKey(name: 'createdAt')
+      DateTime? createdAt});
 }
 
 /// @nodoc
@@ -70,6 +74,7 @@ class _$WordCopyWithImpl<$Res, $Val extends Word>
     Object? ergative = freezed,
     Object? examples = freezed,
     Object? pronunciation = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
       word: null == word
@@ -100,6 +105,10 @@ class _$WordCopyWithImpl<$Res, $Val extends Word>
           ? _value.pronunciation
           : pronunciation // ignore: cast_nullable_to_non_nullable
               as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -111,13 +120,16 @@ abstract class _$$_WordCopyWith<$Res> implements $WordCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@Index() String word,
-      @Index() List<String> definitions,
+      {String word,
+      List<String> definitions,
       String partOfSpeech,
       String? id,
       String? ergative,
       List<String>? examples,
-      String? pronunciation});
+      String? pronunciation,
+      @ServerTimestampConverter()
+      @JsonKey(name: 'createdAt')
+      DateTime? createdAt});
 }
 
 /// @nodoc
@@ -136,6 +148,7 @@ class __$$_WordCopyWithImpl<$Res> extends _$WordCopyWithImpl<$Res, _$_Word>
     Object? ergative = freezed,
     Object? examples = freezed,
     Object? pronunciation = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_$_Word(
       word: null == word
@@ -166,6 +179,10 @@ class __$$_WordCopyWithImpl<$Res> extends _$WordCopyWithImpl<$Res, _$_Word>
           ? _value.pronunciation
           : pronunciation // ignore: cast_nullable_to_non_nullable
               as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -174,13 +191,14 @@ class __$$_WordCopyWithImpl<$Res> extends _$WordCopyWithImpl<$Res, _$_Word>
 @JsonSerializable()
 class _$_Word extends _Word with DiagnosticableTreeMixin {
   const _$_Word(
-      {@Index() required this.word,
-      @Index() required final List<String> definitions,
+      {required this.word,
+      required final List<String> definitions,
       required this.partOfSpeech,
       this.id,
       this.ergative,
       final List<String>? examples,
-      this.pronunciation})
+      this.pronunciation,
+      @ServerTimestampConverter() @JsonKey(name: 'createdAt') this.createdAt})
       : _definitions = definitions,
         _examples = examples,
         super._();
@@ -188,11 +206,9 @@ class _$_Word extends _Word with DiagnosticableTreeMixin {
   factory _$_Word.fromJson(Map<String, dynamic> json) => _$$_WordFromJson(json);
 
   @override
-  @Index()
   final String word;
   final List<String> _definitions;
   @override
-  @Index()
   List<String> get definitions {
     if (_definitions is EqualUnmodifiableListView) return _definitions;
     // ignore: implicit_dynamic_type
@@ -217,10 +233,14 @@ class _$_Word extends _Word with DiagnosticableTreeMixin {
 
   @override
   final String? pronunciation;
+  @override
+  @ServerTimestampConverter()
+  @JsonKey(name: 'createdAt')
+  final DateTime? createdAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Word(word: $word, definitions: $definitions, partOfSpeech: $partOfSpeech, id: $id, ergative: $ergative, examples: $examples, pronunciation: $pronunciation)';
+    return 'Word(word: $word, definitions: $definitions, partOfSpeech: $partOfSpeech, id: $id, ergative: $ergative, examples: $examples, pronunciation: $pronunciation, createdAt: $createdAt)';
   }
 
   @override
@@ -234,7 +254,8 @@ class _$_Word extends _Word with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('ergative', ergative))
       ..add(DiagnosticsProperty('examples', examples))
-      ..add(DiagnosticsProperty('pronunciation', pronunciation));
+      ..add(DiagnosticsProperty('pronunciation', pronunciation))
+      ..add(DiagnosticsProperty('createdAt', createdAt));
   }
 
   @override
@@ -252,7 +273,9 @@ class _$_Word extends _Word with DiagnosticableTreeMixin {
                 other.ergative == ergative) &&
             const DeepCollectionEquality().equals(other._examples, _examples) &&
             (identical(other.pronunciation, pronunciation) ||
-                other.pronunciation == pronunciation));
+                other.pronunciation == pronunciation) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
@@ -265,7 +288,8 @@ class _$_Word extends _Word with DiagnosticableTreeMixin {
       id,
       ergative,
       const DeepCollectionEquality().hash(_examples),
-      pronunciation);
+      pronunciation,
+      createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -283,22 +307,23 @@ class _$_Word extends _Word with DiagnosticableTreeMixin {
 
 abstract class _Word extends Word {
   const factory _Word(
-      {@Index() required final String word,
-      @Index() required final List<String> definitions,
+      {required final String word,
+      required final List<String> definitions,
       required final String partOfSpeech,
       final String? id,
       final String? ergative,
       final List<String>? examples,
-      final String? pronunciation}) = _$_Word;
+      final String? pronunciation,
+      @ServerTimestampConverter()
+      @JsonKey(name: 'createdAt')
+      final DateTime? createdAt}) = _$_Word;
   const _Word._() : super._();
 
   factory _Word.fromJson(Map<String, dynamic> json) = _$_Word.fromJson;
 
   @override
-  @Index()
   String get word;
   @override
-  @Index()
   List<String> get definitions;
   @override
   String get partOfSpeech;
@@ -310,6 +335,10 @@ abstract class _Word extends Word {
   List<String>? get examples;
   @override
   String? get pronunciation;
+  @override
+  @ServerTimestampConverter()
+  @JsonKey(name: 'createdAt')
+  DateTime? get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$_WordCopyWith<_$_Word> get copyWith => throw _privateConstructorUsedError;

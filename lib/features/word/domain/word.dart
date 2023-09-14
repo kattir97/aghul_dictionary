@@ -1,5 +1,5 @@
-// This file is "main.dart"
 import 'package:aghul_dictionary/utils/fast_hash.dart';
+import 'package:aghul_dictionary/utils/server_timestamp_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
@@ -19,6 +19,7 @@ class Word with _$Word {
     String? ergative,
     List<String>? examples,
     String? pronunciation,
+    @ServerTimestampConverter() DateTime? createdAt,
   }) = _Word;
 
   Id get isarId => fastHash(id!);

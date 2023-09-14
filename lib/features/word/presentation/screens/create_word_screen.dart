@@ -5,6 +5,7 @@ import 'package:aghul_dictionary/features/word/presentation/riverpod/word_upload
 import 'package:aghul_dictionary/features/word/presentation/widgets/create_word_widgets/custom_textform_field_widget.dart';
 import 'package:aghul_dictionary/features/word/presentation/widgets/create_word_widgets/definitions_widget.dart';
 import 'package:aghul_dictionary/features/word/presentation/widgets/create_word_widgets/examples_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -187,6 +188,7 @@ class _CreateWordScreenState extends ConsumerState<CreateWordScreen> {
                           partOfSpeech: partOfSpeechController.text,
                           ergative: ergativeController.text,
                           examples: [firstExController.text, ...examps],
+                          createdAt: null,
                         );
 
                         await ref

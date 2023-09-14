@@ -17,38 +17,43 @@ const WordSchema = CollectionSchema(
   name: r'Word',
   id: 2997905348638732671,
   properties: {
-    r'definitions': PropertySchema(
+    r'createdAt': PropertySchema(
       id: 0,
+      name: r'createdAt',
+      type: IsarType.dateTime,
+    ),
+    r'definitions': PropertySchema(
+      id: 1,
       name: r'definitions',
       type: IsarType.stringList,
     ),
     r'ergative': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'ergative',
       type: IsarType.string,
     ),
     r'examples': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'examples',
       type: IsarType.stringList,
     ),
     r'id': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'id',
       type: IsarType.string,
     ),
     r'partOfSpeech': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'partOfSpeech',
       type: IsarType.string,
     ),
     r'pronunciation': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'pronunciation',
       type: IsarType.string,
     ),
     r'word': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'word',
       type: IsarType.string,
     )
@@ -58,34 +63,7 @@ const WordSchema = CollectionSchema(
   deserialize: _wordDeserialize,
   deserializeProp: _wordDeserializeProp,
   idName: r'isarId',
-  indexes: {
-    r'word': IndexSchema(
-      id: -2031626334120420267,
-      name: r'word',
-      unique: false,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'word',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
-    ),
-    r'definitions': IndexSchema(
-      id: 6743818106049066963,
-      name: r'definitions',
-      unique: false,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'definitions',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
-    )
-  },
+  indexes: {},
   links: {},
   embeddedSchemas: {},
   getId: _wordGetId,
@@ -148,13 +126,14 @@ void _wordSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeStringList(offsets[0], object.definitions);
-  writer.writeString(offsets[1], object.ergative);
-  writer.writeStringList(offsets[2], object.examples);
-  writer.writeString(offsets[3], object.id);
-  writer.writeString(offsets[4], object.partOfSpeech);
-  writer.writeString(offsets[5], object.pronunciation);
-  writer.writeString(offsets[6], object.word);
+  writer.writeDateTime(offsets[0], object.createdAt);
+  writer.writeStringList(offsets[1], object.definitions);
+  writer.writeString(offsets[2], object.ergative);
+  writer.writeStringList(offsets[3], object.examples);
+  writer.writeString(offsets[4], object.id);
+  writer.writeString(offsets[5], object.partOfSpeech);
+  writer.writeString(offsets[6], object.pronunciation);
+  writer.writeString(offsets[7], object.word);
 }
 
 Word _wordDeserialize(
@@ -164,13 +143,14 @@ Word _wordDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Word(
-    definitions: reader.readStringList(offsets[0]) ?? [],
-    ergative: reader.readStringOrNull(offsets[1]),
-    examples: reader.readStringList(offsets[2]),
-    id: reader.readStringOrNull(offsets[3]),
-    partOfSpeech: reader.readString(offsets[4]),
-    pronunciation: reader.readStringOrNull(offsets[5]),
-    word: reader.readString(offsets[6]),
+    createdAt: reader.readDateTimeOrNull(offsets[0]),
+    definitions: reader.readStringList(offsets[1]) ?? [],
+    ergative: reader.readStringOrNull(offsets[2]),
+    examples: reader.readStringList(offsets[3]),
+    id: reader.readStringOrNull(offsets[4]),
+    partOfSpeech: reader.readString(offsets[5]),
+    pronunciation: reader.readStringOrNull(offsets[6]),
+    word: reader.readString(offsets[7]),
   );
   return object;
 }
@@ -183,18 +163,20 @@ P _wordDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringList(offset) ?? []) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readStringList(offset) ?? []) as P;
     case 2:
-      return (reader.readStringList(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readStringList(offset)) as P;
     case 4:
-      return (reader.readString(offset)) as P;
-    case 5:
       return (reader.readStringOrNull(offset)) as P;
+    case 5:
+      return (reader.readString(offset)) as P;
     case 6:
+      return (reader.readStringOrNull(offset)) as P;
+    case 7:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -284,97 +266,78 @@ extension WordQueryWhere on QueryBuilder<Word, Word, QWhereClause> {
       ));
     });
   }
-
-  QueryBuilder<Word, Word, QAfterWhereClause> wordEqualTo(String word) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'word',
-        value: [word],
-      ));
-    });
-  }
-
-  QueryBuilder<Word, Word, QAfterWhereClause> wordNotEqualTo(String word) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'word',
-              lower: [],
-              upper: [word],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'word',
-              lower: [word],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'word',
-              lower: [word],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'word',
-              lower: [],
-              upper: [word],
-              includeUpper: false,
-            ));
-      }
-    });
-  }
-
-  QueryBuilder<Word, Word, QAfterWhereClause> definitionsEqualTo(
-      List<String> definitions) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'definitions',
-        value: [definitions],
-      ));
-    });
-  }
-
-  QueryBuilder<Word, Word, QAfterWhereClause> definitionsNotEqualTo(
-      List<String> definitions) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'definitions',
-              lower: [],
-              upper: [definitions],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'definitions',
-              lower: [definitions],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'definitions',
-              lower: [definitions],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'definitions',
-              lower: [],
-              upper: [definitions],
-              includeUpper: false,
-            ));
-      }
-    });
-  }
 }
 
 extension WordQueryFilter on QueryBuilder<Word, Word, QFilterCondition> {
+  QueryBuilder<Word, Word, QAfterFilterCondition> createdAtIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'createdAt',
+      ));
+    });
+  }
+
+  QueryBuilder<Word, Word, QAfterFilterCondition> createdAtIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'createdAt',
+      ));
+    });
+  }
+
+  QueryBuilder<Word, Word, QAfterFilterCondition> createdAtEqualTo(
+      DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Word, Word, QAfterFilterCondition> createdAtGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Word, Word, QAfterFilterCondition> createdAtLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Word, Word, QAfterFilterCondition> createdAtBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'createdAt',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Word, Word, QAfterFilterCondition> definitionsElementEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1571,6 +1534,18 @@ extension WordQueryObject on QueryBuilder<Word, Word, QFilterCondition> {}
 extension WordQueryLinks on QueryBuilder<Word, Word, QFilterCondition> {}
 
 extension WordQuerySortBy on QueryBuilder<Word, Word, QSortBy> {
+  QueryBuilder<Word, Word, QAfterSortBy> sortByCreatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Word, Word, QAfterSortBy> sortByCreatedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
   QueryBuilder<Word, Word, QAfterSortBy> sortByErgative() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ergative', Sort.asc);
@@ -1633,6 +1608,18 @@ extension WordQuerySortBy on QueryBuilder<Word, Word, QSortBy> {
 }
 
 extension WordQuerySortThenBy on QueryBuilder<Word, Word, QSortThenBy> {
+  QueryBuilder<Word, Word, QAfterSortBy> thenByCreatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Word, Word, QAfterSortBy> thenByCreatedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
   QueryBuilder<Word, Word, QAfterSortBy> thenByErgative() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ergative', Sort.asc);
@@ -1707,6 +1694,12 @@ extension WordQuerySortThenBy on QueryBuilder<Word, Word, QSortThenBy> {
 }
 
 extension WordQueryWhereDistinct on QueryBuilder<Word, Word, QDistinct> {
+  QueryBuilder<Word, Word, QDistinct> distinctByCreatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'createdAt');
+    });
+  }
+
   QueryBuilder<Word, Word, QDistinct> distinctByDefinitions() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'definitions');
@@ -1760,6 +1753,12 @@ extension WordQueryProperty on QueryBuilder<Word, Word, QQueryProperty> {
   QueryBuilder<Word, int, QQueryOperations> isarIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isarId');
+    });
+  }
+
+  QueryBuilder<Word, DateTime?, QQueryOperations> createdAtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'createdAt');
     });
   }
 
@@ -1822,6 +1821,7 @@ _$_Word _$$_WordFromJson(Map<String, dynamic> json) => _$_Word(
           ?.map((e) => e as String)
           .toList(),
       pronunciation: json['pronunciation'] as String?,
+      createdAt: const ServerTimestampConverter().fromJson(json['createdAt']),
     );
 
 Map<String, dynamic> _$$_WordToJson(_$_Word instance) => <String, dynamic>{
@@ -1832,4 +1832,5 @@ Map<String, dynamic> _$$_WordToJson(_$_Word instance) => <String, dynamic>{
       'ergative': instance.ergative,
       'examples': instance.examples,
       'pronunciation': instance.pronunciation,
+      'createdAt': const ServerTimestampConverter().toJson(instance.createdAt),
     };
