@@ -18,6 +18,7 @@ class IsarHomeRepositoryImpl implements IsarHomeRepository {
 
   @override
   Future<void> saveWords(List<Word> words) async {
+    print('SAVING WORDS');
     await isarService.saveWords(words);
   }
 
@@ -34,8 +35,14 @@ class IsarHomeRepositoryImpl implements IsarHomeRepository {
       final allWords = await homeRep.getAllDocs();
       await isarService.saveWords(allWords);
       await sharedPrefs.setFirstTime(false);
+      var timestamp = DateTime.now().millisecondsSinceEpoch;
+      var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+      await sharedPrefs.setLastTimestamp(date);
       return true;
     } else {
+      final allWords = await homeRep.getAllDocs();
+      final timestamp = allWords.last.createdAt;
+      await sharedPrefs.setLastTimestamp(timestamp!);
       return false;
     }
   }

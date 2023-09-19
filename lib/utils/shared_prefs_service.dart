@@ -12,6 +12,22 @@ class SharedPrefsService {
     bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
     return isFirstTime;
   }
+
+  Future<void> setLastTimestamp(DateTime date) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int timestamp = date.toUtc().millisecondsSinceEpoch;
+    await prefs.setInt('savedTimestamp', timestamp);
+  }
+
+  Future<DateTime> getLastTimestamp() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? timestamp = prefs.getInt('savedTimestamp');
+    if (timestamp != null) {
+      return DateTime.fromMillisecondsSinceEpoch(timestamp);
+    } else {
+      return DateTime.now();
+    }
+  }
 }
 
 final sharedPrefsProvider = Provider<SharedPrefsService>((ref) {
