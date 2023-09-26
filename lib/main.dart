@@ -1,8 +1,7 @@
-import 'package:aghul_dictionary/features/home/presentation/screens/home_screen.dart';
+import 'package:aghul_dictionary/constants/app_colors.dart';
 import 'package:aghul_dictionary/features/home/presentation/screens/setup_screen.dart';
 import 'package:aghul_dictionary/features/search/presentation/widgets/search_bar_widget.dart';
 import 'package:aghul_dictionary/firebase_options.dart';
-import 'package:aghul_dictionary/utils/shared_prefs_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -27,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: const HomePage(),
     );
@@ -41,6 +40,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 65,
         actions: const [
           SearchBarWidget(),
         ],

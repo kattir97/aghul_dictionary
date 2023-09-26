@@ -15,6 +15,7 @@ class SearchBarWidget extends ConsumerStatefulWidget {
 
 class _SearchBarWidgetState extends ConsumerState<SearchBarWidget> {
   TextEditingController searchController = TextEditingController();
+  FocusNode _focusNode = FocusNode();
   Timer? _debounce;
 
   @override
@@ -26,19 +27,31 @@ class _SearchBarWidgetState extends ConsumerState<SearchBarWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final query = ref.read(searchQueryProvider.notifier);
     return Container(
-      color: Colors.white,
       width: 350,
       padding: const EdgeInsets.all(8.0),
       child: TextField(
+        focusNode: _focusNode,
         controller: searchController,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
+          floatingLabelBehavior: FloatingLabelBehavior.never,
+          fillColor: Colors.white,
+          filled: true,
           labelText: 'Search',
-          prefixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(
+          prefixIcon: const Icon(Icons.search),
+          suffixIcon: IconButton(
+            onPressed: () {
+              searchController.text = '';
+              query.state = '';
+            },
+            icon: const Icon(Icons.close),
+          ),
+          border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(25.0)),
           ),
         ),
+        onTap: () => _focusNode.requestFocus(),
         onChanged: (value) async {
           // if (_debounce?.isActive ?? false) _debounce?.cancel();
           _debounce?.cancel();

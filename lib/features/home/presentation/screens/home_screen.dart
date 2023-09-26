@@ -24,19 +24,19 @@ class HomeScreen extends ConsumerWidget {
     return RefreshIndicator(
       onRefresh: () async {
         ref.refresh(getEntriesFuture);
-        final getEntriesProvider = ref.watch(getEntriesFuture.future);
-        final addedOrUpdatedWords = await getEntriesProvider;
-        print('ADDEDORUPDATED:=======================\n $addedOrUpdatedWords');
-        await isarHomeRep.saveWords(addedOrUpdatedWords);
-        // getEntriesProvider.when(
-        //   data: (data) {
-        //     print('DATA:=======================\n $data');
-        //     final listData = data.toList();
-        //     isarHomeRep.saveWords(listData);
-        //   },
-        //   error: (error, stackTrace) => Text(error.toString()),
-        //   loading: () => const CircularProgressIndicator(),
-        // );
+        // final getEntriesProvider = ref.watch(getEntriesFuture.future);
+        // final addedOrUpdatedWords = await getEntriesProvider;
+        // print('ADDEDORUPDATED:=======================\n $addedOrUpdatedWords');
+        // await isarHomeRep.saveWords(addedOrUpdatedWords);
+        getEntriesProvider.when(
+          data: (data) {
+            print('DATA:=======================\n $data');
+            final listData = data.toList();
+            isarHomeRep.saveWords(listData);
+          },
+          error: (error, stackTrace) => Text(error.toString()),
+          loading: () => const CircularProgressIndicator(),
+        );
 
         return Future.delayed(const Duration(seconds: 1));
       },
@@ -55,10 +55,12 @@ class HomeScreen extends ConsumerWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => WordDetailsScreen(
-                                wordId: entry.id!,
-                              )),
+                      MaterialPageRoute(builder: (context) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        return WordDetailsScreen(
+                          wordId: entry.id!,
+                        );
+                      }),
                     );
                   },
                 );
