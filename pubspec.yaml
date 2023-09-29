@@ -48,6 +48,7 @@ dependencies:
   isar_flutter_libs: ^3.1.0+1
   isar: ^3.1.0+1
   shared_preferences: ^2.2.1
+  flutter_form_builder: ^8.0.0
 
 dev_dependencies:
   flutter_test:
